@@ -1,12 +1,25 @@
 import numpy as np
-from src.algorithms import gradient_descent, momentum_descent, adam_descent, trust_region
+from src.algorithms import gradient_descent, momentum_descent, adam_descent, trust_region, strong_backtracking_line_search
+from src.functions import rosenbrock, rosenbrock_grad, func_test, grad_test
 from src.visualization import plot_comparison
 
 if __name__ == "__main__":
+    # Test line search
+    print("Test hàm line search")
+    x_k = np.array([2.0, 2.0])      # Điểm bắt đầu tại (2, 2)
+    p_k = np.array([-1.0, -1.0])
+    print(f"Điểm bắt đầu: {x_k}, Giá trị hàm: {func_test(x_k)}")
+    alpha = strong_backtracking_line_search(rosenbrock, rosenbrock_grad, x_k, p_k)
+    x_new = x_k + alpha * p_k
+
+    print(f"Bước nhảy tìm được (alpha): {alpha:.4f}")
+    print(f"Điểm mới: {x_new}")
+    print(f"Giá trị hàm tại điểm mới: {rosenbrock(x_new):.4f}")
+
     # Điểm bắt đầu khó (xa điểm cực tiểu 1,1)
     start_point = np.array([-1.5, 2.0])
-    
-    print(f"Bắt đầu tối ưu từ điểm: {start_point}")
+    print("\n\nTest các hàm gradient")
+    print(f"Bắt đầu tối ưu từ điểm: {start_point}, Giá trị hàm: {rosenbrock(start_point)}")
     print("-" * 50)
     
     # 1. Chạy Gradient Descent (Sách GK)

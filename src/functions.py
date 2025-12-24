@@ -15,3 +15,9 @@ def rosenbrock_grad(x):
     df_dx = -2 * (1 - x[0]) - 400 * x[0] * (x[1] - x[0]**2)
     df_dy = 200 * (x[1] - x[0]**2)
     return np.array([df_dx, df_dy])
+
+def func_test(x):
+    return x[0]**2 + x[1]**2
+
+def grad_test(x):
+    return np.array([2*x[0], 2*x[1]])
