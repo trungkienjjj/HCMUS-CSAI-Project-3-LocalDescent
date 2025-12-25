@@ -26,9 +26,7 @@
 - [Cấu trúc thư mục](#-cấu-trúc-thư-mục)
 - [Mô tả các file chính](#-mô-tả-các-file-chính)
 - [Kết quả mẫu & Hình ảnh](#-kết-quả-mẫu--hình-ảnh)
-- [Hướng dẫn đóng góp](#-hướng-dẫn-đóng-góp)
 - [Tài liệu tham khảo](#-tài-liệu-tham-khảo)
-- [License & Liên hệ](#-license--liên-hệ)
 
 ---
 
@@ -103,7 +101,7 @@ CSAI_Project3_LocalDescent/
 ---
 
 ## 📈 Kết quả mẫu & Hình ảnh
-Dưới đây là một vài kết quả mẫu đã lưu trong `report/images/` (nếu có trong repo):
+Dưới đây là một vài kết quả mẫu đã lưu trong `report/images/`:
 
 - Biểu đồ so sánh hội tụ:
   ![Kết quả biểu đồ](report/images/result_chart.png)
@@ -111,28 +109,17 @@ Dưới đây là một vài kết quả mẫu đã lưu trong `report/images/` 
 - Đường đi tối ưu trên contour (ví dụ Rosenbrock):
   ![Đường đi tối ưu](report/images/result_experiment.png)
 
-Nếu bạn muốn ảnh hiển thị trực tiếp trên README nhưng tên file khác, vui lòng sửa đường dẫn tương ứng hoặc tải ảnh mới vào `report/images/`.
 
 ---
 
 ## 👥 Thành viên nhóm
 | STT | Họ và Tên | MSSV | Vai trò |
 |-----|-----------|------|---------:|
-| 1   | Nguyễn Trần Trung Kiên | [MSSV] | Chủ trì/Thực hiện chính |
-| 2   | [Tên thành viên 2]     | [MSSV] | [Vai trò] |
-| 3   | [Tên thành viên 3]     | [MSSV] | [Vai trò] |
-| 4   | [Tên thành viên 4]     | [MSSV] | [Vai trò] |
+| 1   | Nguyễn Trần Trung Kiên | 23122038 | Trình bày phần Thực nghiệm, làm bài tập |
+| 2   | Vũ Nguyễn Trung Hiếu     | 23122028 | Trình bày phần Mở rộng |
+| 3   | Châu Văn Minh Khoa     | 23122035 | Tổng quan, Cơ sở lý thuyết |
+| 4   | Phan Ngọc Quân     | 23122046 | Trình bày phần Phương pháp Local Descent |
 
-(Bạn vui lòng cập nhật MSSV và vai trò cho đầy đủ.)
-
----
-
-## 🤝 Hướng dẫn đóng góp
-- Fork repository và tạo branch feature/your-feature.
-- Thêm test (nếu có thể), cập nhật README nếu thêm script mới.
-- Mở pull request mô tả rõ thay đổi.
-
-Gợi ý đóng góp: thêm các optimizer khác (RMSProp, BFGS đơn giản), thêm benchmark tự động, hoặc viết test unit cho gradient.
 
 ---
 
@@ -141,20 +128,6 @@ Gợi ý đóng góp: thêm các optimizer khác (RMSProp, BFGS đơn giản), t
 - Nocedal, J., & Wright, S. (2006). Numerical Optimization.
 - Tài liệu môn CSAI — HCMUS.
 
----
 
-## ⚖️ License & Liên hệ
-- License: Hiện tại repo chưa có file LICENSE. Nếu muốn, nhóm có thể chọn MIT/GPL/... và thêm file LICENSE tương ứng.
-- Tác giả / Liên hệ:
-  - Nguyễn Trần Trung Kiên — GitHub: @trungkienjjj
-  - Email: (thêm email nếu muốn công khai)
 
----
-
-## Ghi chú cuối
-- Mình đã cập nhật README với cấu trúc rõ ràng, hướng dẫn cài đặt và chạy cơ bản, mô tả file chính và ví dụ hình ảnh trích từ `report/images/`.
-- Nếu muốn, mình có thể tiếp tục:
-  - Thêm badge CI (GitHub Actions) hoặc conda environment.
-  - Viết hướng dẫn chạy bằng Docker.
-  - Update trực tiếp các script để chấp nhận CLI args và xuất log chi tiết.
 
