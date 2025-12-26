@@ -1,8 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+import sys
+
+# --- [FIX 1] TỰ ĐỘNG SỬA LỖI IMPORT ---
+# Thêm thư mục cha (project root) vào đường dẫn tìm kiếm của Python
+# Giúp chạy file này trực tiếp mà không bị lỗi ModuleNotFoundError
+current_dir = os.path.dirname(os.path.abspath(__file__)) # Lấy đường dẫn thư mục src/
+parent_dir = os.path.dirname(current_dir)              # Lấy đường dẫn thư mục dự án
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
 from src.functions import rosenbrock, rosenbrock_grad
 
-# --- Cài đặt lại GD Fixed Step & GD Backtracking riêng cho thực nghiệm này ---
+# --- Cài đặt thuật toán ---
 
 def gd_fixed_step(start_x, lr=0.002, n_iter=5000):
     path = [start_x]
@@ -18,19 +29,17 @@ def gd_backtracking(start_x, n_iter=1000):
     path = [start_x]
     x = start_x.copy()
     alpha = 1.0
-    beta = 1e-4 # Tham số trong báo cáo
-    p = 0.5     # Step reduction factor
+    beta = 1e-4
+    p = 0.5
     
     for i in range(n_iter):
         g = rosenbrock_grad(x)
         if np.linalg.norm(g) < 1e-4: break
         
-        # Backtracking Line Search logic
         d = -g
-        alpha = 1.0 # Reset alpha mỗi bước (hoặc giữ lại tùy chiến lược)
+        alpha = 1.0 # Reset alpha
         current_f = rosenbrock(x)
         
-        # Vòng lặp tìm alpha thỏa mãn Armijo
         while rosenbrock(x + alpha * d) > current_f + beta * alpha * np.dot(g, d):
             alpha *= p
             if alpha < 1e-8: break
@@ -40,43 +49,47 @@ def gd_backtracking(start_x, n_iter=1000):
     return np.array(path)
 
 def run_experiment():
-    start_point = np.array([-1.2, 1.0]) # Điểm khởi tạo theo báo cáo
-    
+    start_point = np.array([-1.2, 1.0])
     print("Đang chạy thực nghiệm...")
     
-    # 1. Chạy Fixed Step
+    # 1. Chạy thuật toán
     path_fixed = gd_fixed_step(start_point, lr=0.002)
-    print(f"- Fixed Step (lr=0.002): {len(path_fixed)} steps. Final: {path_fixed[-1]}")
+    print(f"- Fixed Step: {len(path_fixed)} steps.")
     
-    # 2. Chạy Backtracking
     path_backtrack = gd_backtracking(start_point)
-    print(f"- Backtracking: {len(path_backtrack)} steps. Final: {path_backtrack[-1]}")
+    print(f"- Backtracking: {len(path_backtrack)} steps.")
     
-    # 3. Vẽ biểu đồ (Visualization)
+    # --- [FIX 2] CẢI THIỆN BIỂU ĐỒ ---
     x = np.linspace(-1.5, 1.5, 400)
     y = np.linspace(-0.5, 1.5, 400)
     X, Y = np.meshgrid(x, y)
-    Z = (1 - X)**2 + 100 * (Y - X**2)**2 # Rosenbrock
+    Z = (1 - X)**2 + 100 * (Y - X**2)**2
 
-    plt.figure(figsize=(10, 6))
-    plt.contour(X, Y, Z, levels=np.logspace(-1, 3, 40), cmap='jet', alpha=0.6)
-    plt.plot(1, 1, 'k*', markersize=15, label='Global Min (1,1)') # Đích
+    plt.figure(figsize=(12, 8))
     
-    # Vẽ đường đi Fixed Step
-    plt.plot(path_fixed[:, 0], path_fixed[:, 1], 'r-', linewidth=1.5, label=f'Fixed Step (lr=0.002)')
+    # Dùng màu xám (gray) và làm mờ (alpha=0.3) để nền không lấn át đường đi
+    plt.contour(X, Y, Z, levels=np.logspace(-1, 3, 50), cmap='gray', alpha=0.3)
     
-    # Vẽ đường đi Backtracking
-    plt.plot(path_backtrack[:, 0], path_backtrack[:, 1], 'b-o', markersize=3, linewidth=1.5, label='Backtracking Line Search')
+    plt.plot(1, 1, 'k*', markersize=18, label='Global Min (1,1)', zorder=10)
     
-    plt.title('Comparison: Fixed Step vs Backtracking on Rosenbrock')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.legend()
-    plt.grid(True, linestyle='--', alpha=0.3)
+    # Đường Fixed Step: Màu ĐỎ
+    plt.plot(path_fixed[:, 0], path_fixed[:, 1], 
+             color='#D62728', linewidth=2, label=f'Fixed Step ({len(path_fixed)} steps)')
     
-    # Lưu ảnh vào thư mục report
-    save_path = 'report/images/result_experiment.png'
-    plt.savefig(save_path, dpi=300)
+    # Đường Backtracking: Màu XANH DƯƠNG (Nổi bật trên nền xám)
+    plt.plot(path_backtrack[:, 0], path_backtrack[:, 1], 
+             color='#1F77B4', linewidth=2, marker='o', markersize=4, markevery=30,
+             label=f'Backtracking ({len(path_backtrack)} steps)', zorder=5)
+    
+    plt.title('Comparison: Fixed Step vs Backtracking Line Search', fontsize=14)
+    plt.legend(fontsize=12)
+    plt.grid(True, linestyle=':', alpha=0.4)
+    
+    # Tự động tạo thư mục nếu chưa có (Tránh lỗi FileNotFoundError)
+    save_path = os.path.join(parent_dir, 'report', 'images', 'result_experiment.png')
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
     print(f"Đã lưu ảnh kết quả tại: {save_path}")
     plt.show()
 
